@@ -262,6 +262,46 @@ function runExample(example) {
       console.log("finish");
       break;
     }
+    case "async-await": {
+      // promise combinator -- it returns the first fiulfilled promises, ignore all the rejected once
+      console.log("start");
+      function importantAction(username) {
+        return new Promise((res, rej) => {
+          setTimeout(() => {
+            res("Subscribed to " + username);
+          }, 0);
+        });
+      }
+      function likeTheVideo(action) {
+        return new Promise((res, rej) => {
+          setTimeout(() => {
+            res("Liked the " + action);
+          }, 1000);
+        });
+      }
+      function shareTheVideo(action) {
+        return new Promise((res, rej) => {
+          setTimeout(() => {
+            res("Shared the " + action);
+          }, 1000);
+        });
+      }
+      const result = async () => {
+        try {
+          const message1 = await importantAction("Arnab");
+          console.log(message1);
+          const message2 = await likeTheVideo("Video");
+          console.log(message2);
+          const message3 = await shareTheVideo("Video");
+          console.log(message3);
+        } catch (err) {
+          console.log("Promise Failed", err);
+        }
+      };
+      result();
+      console.log("finish");
+      break;
+    }
   }
 }
 
@@ -273,4 +313,5 @@ function runExample(example) {
 // runExample("promise-all-combinator");
 // runExample("promise-race-combinator");
 // runExample("promise-all-settled-combinator");
-runExample("promise-any-combinator");
+// runExample("promise-any-combinator");
+runExample("async-await");
