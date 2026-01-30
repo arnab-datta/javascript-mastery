@@ -302,6 +302,67 @@ function runExample(example) {
       console.log("finish");
       break;
     }
+    case "output-1": {
+      // start 1 3 finish 2
+      // synchronous first also inside promise when promise is initialized
+      console.log("start");
+      const promise1 = new Promise((resolve, reject) => {
+        console.log(1);
+        resolve(2);
+        console.log(3);
+      });
+      promise1.then((res) => {
+        console.log(res);
+      });
+      console.log("finish");
+      break;
+    }
+    case "output-2": {
+      // start 1 3 finish
+      console.log("start");
+      const promise1 = new Promise((resolve, reject) => {
+        console.log(1);
+        console.log(3);
+      });
+      promise1.then((res) => {
+        console.log(res);
+      });
+      console.log("finish");
+      break;
+    }
+    case "output-3": {
+      // start middle 1 3 finish 2
+      // function is called after middle
+      console.log("start");
+      const fun = () =>
+        new Promise((resolve, reject) => {
+          console.log(1);
+          resolve(2);
+          console.log(3);
+        });
+      console.log("middle");
+      fun().then((res) => {
+        console.log(res);
+      });
+      console.log("finish");
+      break;
+    }
+    case "output-4": {
+      // Error 1 success 4
+      function job() {
+        return new Promise((resolve, reject) => {
+          reject();
+        });
+      }
+      let promise = job();
+      promise
+        .then(() => console.log("success 1"))
+        .then(() => console.log("success 2"))
+        .then(() => console.log("success 3"))
+        .catch(() => console.log("Error 1"))
+        .then(() => console.log("success 4"));
+      break;
+    }
   }
 }
 
@@ -314,4 +375,8 @@ function runExample(example) {
 // runExample("promise-race-combinator");
 // runExample("promise-all-settled-combinator");
 // runExample("promise-any-combinator");
-runExample("async-await");
+// runExample("async-await");
+// runExample("output-1");
+// runExample("output-2");
+// runExample("output-3");
+runExample("output-4");
